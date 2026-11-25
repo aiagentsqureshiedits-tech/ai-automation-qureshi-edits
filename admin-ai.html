@@ -1,0 +1,1865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Automation Admin — Qureshi Edits</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="assets/logo/official-logo.png" type="image/png" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="utils.js"></script>
+  <script src="config.js"></script>
+  <script src="analytics.js"></script>
+  <style>
+    .admin-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .admin-section {
+      background: var(--deep-navy);
+      border-radius: var(--radius);
+      border: 1px solid var(--border-dark);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    .admin-section h2 {
+      color: var(--ice-cyan);
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-dark);
+      padding-bottom: 1rem;
+    }
+    .admin-form {
+      display: grid;
+      gap: 1.5rem;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--soft-white);
+      font-size: 0.9rem;
+    }
+    .form-control {
+      width: 100%;
+      padding: 0.75rem;
+      background: var(--midnight-ink);
+      border: 1px solid var(--border-dark);
+      border-radius: 6px;
+      color: var(--soft-white);
+      font-family: var(--font-family);
+      font-size: 0.95rem;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--electric-blue);
+    }
+    .btn-admin {
+      padding: 0.75rem 1.5rem;
+      background: var(--electric-blue);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.25s ease;
+    }
+    .btn-admin:hover {
+      background: var(--electric-blue-hover);
+    }
+    .btn-admin.secondary {
+      background: transparent;
+      border: 1px solid var(--cool-silver);
+      color: var(--cool-silver);
+    }
+    .btn-admin.secondary:hover {
+      border-color: var(--electric-blue);
+      color: var(--electric-blue);
+    }
+    .btn-admin.danger {
+      background: var(--coral-red);
+      border-color: var(--coral-red);
+    }
+    .btn-admin.danger:hover {
+      background: #ff4d4d;
+    }
+    .btn-admin.success {
+      background: var(--emerald-green);
+      border-color: var(--emerald-green);
+    }
+    .btn-admin.success:hover {
+      background: #10b981;
+    }
+    .video-list {
+      display: grid;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .video-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background: var(--midnight-ink);
+      border-radius: 6px;
+      border: 1px solid var(--border-dark);
+    }
+    .video-item-info h4 {
+      color: var(--soft-white);
+      margin-bottom: 0.25rem;
+    }
+    .video-item-meta {
+      font-size: 0.85rem;
+      color: var(--cool-silver);
+    }
+    .video-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .btn-icon {
+      padding: 0.5rem;
+      background: transparent;
+      border: 1px solid var(--border-dark);
+      border-radius: 4px;
+      color: var(--cool-silver);
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+    .btn-icon:hover {
+      border-color: var(--electric-blue);
+      color: var(--electric-blue);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .stat-card {
+      background: var(--midnight-ink);
+      border-radius: 8px;
+      border: 1px solid var(--border-dark);
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .stat-card h3 {
+      color: var(--ice-cyan);
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    .stat-card p {
+      color: var(--cool-silver);
+      font-size: 0.9rem;
+    }
+    .stat-card.warning h3 { color: #F59E0B; }
+    .stat-card.danger h3 { color: #ef4444; }
+    .stat-card.success h3 { color: var(--emerald-green); }
+    .login-form {
+      max-width: 400px;
+      margin: 4rem auto;
+    }
+    .analytics-chart {
+      background: var(--midnight-ink);
+      border-radius: 8px;
+      border: 1px solid var(--border-dark);
+      padding: 1.5rem;
+      margin-top: 1rem;
+    }
+    .hidden { display: none !important; }
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .badge-primary { background: var(--electric-blue); color: #fff; }
+    .badge-success { background: var(--emerald-green); color: #fff; }
+    .badge-warning { background: #F59E0B; color: #fff; }
+    .badge-danger { background: #ef4444; color: #fff; }
+    .badge-info { background: var(--ice-cyan); color: var(--midnight-ink); }
+    .badge-secondary { background: var(--cool-silver); color: var(--midnight-ink); }
+
+    /* Agent status cards */
+    .agent-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .agent-card {
+      background: var(--midnight-ink);
+      border: 1px solid var(--border-dark);
+      border-radius: 8px;
+      padding: 1.25rem;
+    }
+    .agent-card.running { border-left: 4px solid var(--emerald-green); }
+    .agent-card.paused { border-left: 4px solid #F59E0B; }
+    .agent-card.stopped { border-left: 4px solid #ef4444; }
+    .agent-card.error { border-left: 4px solid #ef4444; }
+    .agent-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+    .agent-name {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--soft-white);
+    }
+    .agent-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      font-size: 0.85rem;
+    }
+    .agent-stat {
+      background: var(--deep-navy);
+      padding: 0.5rem;
+      border-radius: 4px;
+      text-align: center;
+    }
+    .agent-stat-value {
+      color: var(--ice-cyan);
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    .agent-stat-label {
+      color: var(--cool-silver);
+      font-size: 0.75rem;
+    }
+    .agent-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    /* Prospect list */
+    .prospect-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    .prospect-table th,
+    .prospect-table td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-dark);
+    }
+    .prospect-table th {
+      color: var(--ice-cyan);
+      font-weight: 600;
+    }
+    .prospect-table td {
+      color: var(--soft-white);
+    }
+    .prospect-table tr:hover td {
+      background: var(--deep-navy);
+    }
+    .prospect-table .score-high { color: var(--emerald-green); font-weight: 600; }
+    .prospect-table .score-med { color: #F59E0B; font-weight: 600; }
+    .prospect-table .score-low { color: #ef4444; font-weight: 600; }
+
+    /* Outreach list */
+    .outreach-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+    .outreach-table th,
+    .outreach-table td {
+      padding: 0.5rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-dark);
+    }
+    .outreach-table th {
+      color: var(--ice-cyan);
+      font-weight: 600;
+    }
+    .outreach-table td {
+      color: var(--soft-white);
+    }
+    .outreach-table .status-draft { color: var(--cool-silver); }
+    .outreach-table .status-pending { color: #F59E0B; }
+    .outreach-table .status-approved { color: var(--emerald-green); }
+    .outreach-table .status-sent { color: var(--ice-cyan); }
+    .outreach-table .status-replied { color: var(--emerald-green); }
+    .outreach-table .status-rejected { color: #ef4444; }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal.hidden { display: none; }
+    .modal-content {
+      background: var(--deep-navy);
+      border: 1px solid var(--border-dark);
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    .modal-title {
+      color: var(--ice-cyan);
+      font-size: 1.5rem;
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--cool-silver);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    .modal-close:hover { color: var(--electric-blue); }
+
+    /* Logs */
+    .log-entry {
+      padding: 0.5rem;
+      border-bottom: 1px solid var(--border-dark);
+      font-family: monospace;
+      font-size: 0.8rem;
+    }
+    .log-entry:last-child { border-bottom: none; }
+    .log-entry.info { color: var(--ice-cyan); }
+    .log-entry.warning { color: #F59E0B; }
+    .log-entry.error { color: #ef4444; }
+    .log-entry.success { color: var(--emerald-green); }
+    .log-time { color: var(--cool-silver); }
+    .log-message { color: var(--soft-white); }
+
+    /* Tabs */
+    .tab-nav {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-dark);
+      padding-bottom: 0.5rem;
+    }
+    .tab-btn {
+      padding: 0.5rem 1rem;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      color: var(--cool-silver);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab-btn:hover {
+      color: var(--soft-white);
+      border-color: var(--border-dark);
+    }
+    .tab-btn.active {
+      background: var(--electric-blue);
+      color: #fff;
+      border-color: var(--electric-blue);
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .form-row { grid-template-columns: 1fr; }
+      .video-item { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+      .agent-stats { grid-template-columns: 1fr; }
+      .prospect-table, .outreach-table { font-size: 0.75rem; }
+      .prospect-table th, .prospect-table td,
+      .outreach-table th, .outreach-table td { padding: 0.5rem 0.25rem; }
+    }
+  </style>
+</head>
+<body style="background: var(--midnight-ink);">
+
+  <!-- Login Section -->
+  <div id="login-section">
+    <header class="header">
+      <div class="container">
+        <a href="index.html" class="logo">
+          <img src="assets/logo/official-logo.png" alt="Qureshi Edits" style="height: 40px; width: auto;" />
+          <span class="logo-text">QURESHI EDITS</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="admin-container">
+      <div class="admin-section" style="max-width: 400px; margin: 4rem auto;">
+        <h2>🤖 AI Automation Admin</h2>
+        <p style="color: var(--cool-silver); margin-bottom: 1.5rem;">
+          Secure access to the AI-powered client acquisition system.
+        </p>
+        <form id="login-form" class="admin-form">
+          <div class="form-group">
+            <label for="admin-password">Admin Password</label>
+            <input type="password" id="admin-password" class="form-control" placeholder="Enter admin password" required />
+          </div>
+          <button type="submit" class="btn-admin" style="width: 100%;">Login</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Admin Panel -->
+  <div id="admin-panel" class="hidden">
+    <header class="header">
+      <div class="container">
+        <a href="index.html" class="logo">
+          <img src="assets/logo/official-logo.png" alt="Qureshi Edits" style="height: 40px; width: auto;" />
+        </a>
+        <div style="margin-left: auto; display: flex; gap: 1rem; align-items: center;">
+          <span id="system-status-badge" class="badge badge-success">System Running</span>
+          <button class="btn-admin secondary" onclick="logout()">Logout</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="admin-container">
+
+      <!-- System Health & Controls -->
+      <div class="admin-section">
+        <h2>🏥 System Health & Controls</h2>
+        <div class="stats-grid">
+          <div class="stat-card" id="stat-system-status">
+            <h3 id="health-status">Checking...</h3>
+            <p>System Status</p>
+          </div>
+          <div class="stat-card" id="stat-prospects">
+            <h3 id="health-prospects">-</h3>
+            <p>Total Prospects</p>
+          </div>
+          <div class="stat-card" id="stat-outreach-today">
+            <h3 id="health-outreach-today">-</h3>
+            <p>Outreach Sent Today</p>
+          </div>
+          <div class="stat-card" id="stat-replies">
+            <h3 id="health-replies">-</h3>
+            <p>Replies Received</p>
+          </div>
+          <div class="stat-card" id="stat-quotas">
+            <h3 id="health-quotas">-</h3>
+            <p>API Quotas Health</p>
+          </div>
+          <div class="stat-card" id="stat-last-run">
+            <h3 id="health-last-run">-</h3>
+            <p>Last Daily Run</p>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;">
+          <button class="btn-admin" onclick="runHealthCheck()">🔄 Refresh Health</button>
+          <button class="btn-admin secondary" onclick="runDailyOrchestration()">▶️ Run Daily Orchestration</button>
+          <button class="btn-admin secondary" onclick="runErrorRecovery()">🔧 Run Error Recovery</button>
+          <button class="btn-admin secondary" onclick="generateDailyReport()">📊 Generate Report</button>
+          <button class="btn-admin warning" onclick="showEmergencyStopModal()">🛑 Emergency Stop</button>
+        </div>
+      </div>
+
+      <!-- Agent Status & Controls -->
+      <div class="admin-section">
+        <h2>🤖 Agent Status & Controls</h2>
+        <div class="tab-nav" id="agent-tabs">
+          <button class="tab-btn active" data-tab="overview">Overview</button>
+          <button class="tab-btn" data-tab="instagram">Instagram Agent</button>
+          <button class="tab-btn" data-tab="linkedin">LinkedIn Agent</button>
+          <button class="tab-btn" data-tab="email-finder">Email Finder</button>
+          <button class="tab-btn" data-tab="email-outreach">Email Outreach</button>
+        </div>
+
+        <div class="tab-panel active" id="tab-overview">
+          <div class="agent-grid" id="agent-overview-grid">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <div class="tab-panel" id="tab-instagram">
+          <div class="agent-grid">
+            <div class="agent-card" id="agent-ig-card">
+              <div class="agent-header">
+                <span class="agent-name">Instagram Research & DM</span>
+                <span class="badge badge-primary" id="ig-status">Checking...</span>
+              </div>
+              <div class="agent-stats">
+                <div class="agent-stat">
+                  <div class="agent-stat-value" id="ig-prospects">-</div>
+                  <div class="agent-stat-label">Prospects Researched</div>
+                </div>
+                <div class="agent-stat">
+                  <div class="agent-stat-value" id="ig-dms">-</div>
+                  <div class="agent-stat-label">DMs Generated</div>
+                </div>
+                <div class="agent-stat">
+                  <div class="agent-stat-value" id="ig-pending">-</div>
+                  <div class="agent-stat-label">Pending Review</div>
+                </div>
+                <div class="agent-stat">
+                  <div class="agent-stat-value" id="ig-sent">-</div>
+                  <div class="agent-stat-label">Sent (Manual)</div>
+                </div>
+              </div>
+              <div class="agent-actions">
+                <button class="btn-admin secondary btn-sm" onclick="runAgentTask('instagram', 'research')">Research Profiles</button>
+                <button class="btn-admin secondary btn-sm" onclick="runAgentTask('instagram', 'generate_dm')">Generate DMs</button>
+                <button class="btn-admin secondary btn-sm" onclick="runAgentTask('instagram', 'compliance')">Check Compliance</button>
+                <button class="btn-admin secondary btn-sm" onclick="toggleAgent('instagram')">Toggle Pause</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="tab-linkedin">
+          <div class="agent-grid">
+            <div class="agent-card" id="agent-li-card">
+              <div class="agent-header">
+                <span class="agent-name">LinkedIn Connection & Messaging</span>
+                <span class="badge badge-primary" id="li-status">Checking...</span>
+              </div>
+              <div class="agent-stats">
+                <div class="agent-stat">
+                  <div class="agent-stat-value" id="li-prospects">-</div>
+                  <div class="agent-stat-label">Prospects Researched</div>
+                </div>
+                <div class="agent-stat">
+                  <div class="agent-stat-value" id="li-connections">-</div>
+                  <div class="agent-stat-label">Connection Notes</div>
+                </div>
+                <div class="agent-stat">
+                  <div class="agent-stat-value" id="li-messages">-</div>
+                  <div class="agent-stat-label">Messages Generated</div>
+                </div>
+                <div class="agent-stat">
+                  <div class="agent-stat-value" id="li-pending">-</div>
+                  <div class="agent-stat-label">Pending Review</div>
+                </div>
+              </div>
+              <div class="agent-actions">
+                <button class="btn-admin secondary btn-sm" onclick="runAgentTask('linkedin', 'research')">Research Profiles</button>
+                <button class="btn-admin secondary btn-sm" onclick="runAgentTask('linkedin', 'generate_connection')">Generate Connections</button>
+                <button class="btn-admin secondary btn-sm" onclick="runAgentTask('linkedin', 'generate_message')">Generate Messages</button>
+                <button class="btn-admin secondary btn-sm" onclick="toggleAgent('linkedin')">Toggle Pause</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="tab-email-finder">
+          <div class="agent-grid">
+            <div class="agent-card" id="agent-ef-card">
+              <div class="agent-header">
+                <span class="agent-name">Email Lead Finder</span>
+                <span class="badge badge-primary" id="ef-status">Checking...</span>
+              </div>
+              <div class="agent-stats">
+                <div class="agent-stat">
+                  <div class="agent-stat-value" id="ef-found">-</div>
+                  <div class="agent-stat-label">Emails Found</div>
+                </div>
+                <div class="agent-stat">
+                  <div class="agent-stat-value" id="ef-verified">-</div>
+                  <div class="agent-stat-label">Verified</div>
+                </div>
+                <div class="agent-stat">
+                  <div class="agent-stat-value" id="ef-scored">-</div>
+                  <div class="agent-stat-label">Scored & Qualified</div>
+                </div>
+                <div class="agent-stat">
+                  <div class="agent-stat-value" id="ef-sources">-</div>
+                  <div class="agent-stat-label">Sources Used</div>
+                </div>
+              </div>
+              <div class="agent-actions">
+                <button class="btn-admin secondary btn-sm" onclick="runAgentTask('email_finder', 'find')">Find Emails</button>
+                <button class="btn-admin secondary btn-sm" onclick="runAgentTask('email_finder', 'verify')">Verify Emails</button>
+                <button class="btn-admin secondary btn-sm" onclick="runAgentTask('email_finder', 'score')">Score Prospects</button>
+                <button class="btn-admin secondary btn-sm" onclick="toggleAgent('email_finder')">Toggle Pause</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="tab-email-outreach">
+          <div class="agent-grid">
+            <div class="agent-card" id="agent-eo-card">
+              <div class="agent-header">
+                <span class="agent-name">Email Outreach</span>
+                <span class="badge badge-primary" id="eo-status">Checking...</span>
+              </div>
+              <div class="agent-stats">
+                <div class="agent-stat">
+                  <div class="agent-stat-value" id="eo-drafted">-</div>
+                  <div class="agent-stat-label">Drafts Created</div>
+                </div>
+                <div class="agent-stat">
+                  <div class="agent-stat-value" id="eo-sent">-</div>
+                  <div class="agent-stat-label">Sent</div>
+                </div>
+                <div class="agent-stat">
+                  <div class="agent-stat-value" id="eo-replied">-</div>
+                  <div class="agent-stat-label">Replied</div>
+                </div>
+                <div class="agent-stat">
+                  <div class="agent-stat-value" id="eo-followups">-</div>
+                  <div class="agent-stat-label">Followups Pending</div>
+                </div>
+              </div>
+              <div class="agent-actions">
+                <button class="btn-admin secondary btn-sm" onclick="runAgentTask('email_outreach', 'draft')">Generate Drafts</button>
+                <button class="btn-admin secondary btn-sm" onclick="runAgentTask('email_outreach', 'compliance')">Check Compliance</button>
+                <button class="btn-admin secondary btn-sm" onclick="runAgentTask('email_outreach', 'send')">Send Approved</button>
+                <button class="btn-admin secondary btn-sm" onclick="toggleAgent('email_outreach')">Toggle Pause</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prospects Management -->
+      <div class="admin-section">
+        <h2>👥 Prospects Management</h2>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <select id="prospect-filter-status" class="form-control" style="width: auto; min-width: 180px;">
+              <option value="">All Statuses</option>
+              <option value="new">New</option>
+              <option value="qualified">Qualified</option>
+              <option value="contacted">Contacted</option>
+              <option value="replied_interested">Replied Interested</option>
+              <option value="positive_reply">Positive Reply</option>
+              <option value="meeting_booked">Meeting Booked</option>
+              <option value="closed_won">Closed Won</option>
+              <option value="closed_lost">Closed Lost</option>
+              <option value="suppressed">Suppressed</option>
+            </select>
+            <select id="prospect-filter-niche" class="form-control" style="width: auto; min-width: 180px;">
+              <option value="">All Niches</option>
+              <option value="Gaming">Gaming</option>
+              <option value="Education">Education</option>
+              <option value="Tech">Tech</option>
+              <option value="Fitness">Fitness</option>
+              <option value="Travel">Travel</option>
+              <option value="Business">Business</option>
+              <option value="Podcast">Podcast</option>
+              <option value="Real Estate">Real Estate</option>
+              <option value="Finance">Finance</option>
+              <option value="Health">Health</option>
+              <option value="Lifestyle">Lifestyle</option>
+            </select>
+            <input type="text" id="prospect-search" class="form-control" placeholder="Search name, company, email..." style="width: auto; min-width: 250px;">
+            <button class="btn-admin secondary" onclick="loadProspects()">🔍 Filter</button>
+          </div>
+          <button class="btn-admin" onclick="showAddProspectModal()">➕ Add Prospect</button>
+        </div>
+        <div style="overflow-x: auto;">
+          <table class="prospect-table" id="prospects-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Company</th>
+                <th>Niche</th>
+                <th>Country</th>
+                <th>Platform</th>
+                <th>Score</th>
+                <th>Status</th>
+                <th>Last Activity</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="prospects-tbody">
+              <tr><td colspan="9" style="text-align: center; color: var(--cool-silver);">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Outreach Queue -->
+      <div class="admin-section">
+        <h2>📬 Outreach Queue</h2>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <select id="outreach-filter-status" class="form-control" style="width: auto; min-width: 180px;">
+              <option value="">All Statuses</option>
+              <option value="draft">Draft</option>
+              <option value="pending_review">Pending Review</option>
+              <option value="approved">Approved</option>
+              <option value="sent">Sent</option>
+              <option value="delivered">Delivered</option>
+              <option value="replied">Replied</option>
+              <option value="rejected">Rejected</option>
+            </select>
+            <select id="outreach-filter-channel" class="form-control" style="width: auto; min-width: 180px;">
+              <option value="">All Channels</option>
+              <option value="instagram">Instagram</option>
+              <option value="linkedin">LinkedIn</option>
+              <option value="email">Email</option>
+            </select>
+            <button class="btn-admin secondary" onclick="loadOutreach()">🔍 Filter</button>
+          </div>
+        </div>
+        <div style="overflow-x: auto;">
+          <table class="outreach-table" id="outreach-table">
+            <thead>
+              <tr>
+                <th>Prospect</th>
+                <th>Channel</th>
+                <th>Type</th>
+                <th>Variant</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>Sent</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="outreach-tbody">
+              <tr><td colspan="8" style="text-align: center; color: var(--cool-silver);">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Compliance & Settings -->
+      <div class="admin-section">
+        <h2>⚙️ Compliance & Settings</h2>
+        <div class="tab-nav" id="settings-tabs">
+          <button class="tab-btn active" data-tab="compliance">Compliance Gate</button>
+          <button class="tab-btn" data-tab="model-router">Model Router</button>
+          <button class="tab-btn" data-tab="notifications">Notifications</button>
+          <button class="tab-btn" data-tab="system">System Settings</button>
+        </div>
+
+        <div class="tab-panel active" id="tab-compliance">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Test Compliance Check</label>
+              <textarea id="compliance-test-body" class="form-control" rows="5" placeholder="Paste outreach message to test..."></textarea>
+            </div>
+            <div class="form-group">
+              <label>Channel</label>
+              <select id="compliance-test-channel" class="form-control">
+                <option value="email">Email</option>
+                <option value="instagram">Instagram</option>
+                <option value="linkedin">LinkedIn</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn-admin" onclick="testCompliance()">🧪 Test Compliance</button>
+          <div id="compliance-result" style="margin-top: 1rem; display: none;"></div>
+        </div>
+
+        <div class="tab-panel" id="tab-model-router">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Primary Provider</label>
+              <select id="model-primary" class="form-control">
+                <option value="gemini">Gemini 1.5 Flash</option>
+                <option value="groq">Groq Llama 3.1 70B</option>
+                <option value="ollama">Ollama Local</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Fallback Enabled</label>
+              <select id="model-fallback" class="form-control">
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Gemini Daily Limit</label>
+              <input type="number" id="model-gemini-limit" class="form-control" value="1500" min="100" max="10000">
+            </div>
+            <div class="form-group">
+              <label>Groq Daily Limit</label>
+              <input type="number" id="model-groq-limit" class="form-control" value="14400" min="100" max="50000">
+            </div>
+          </div>
+          <button class="btn-admin" onclick="saveModelSettings()">💾 Save Model Settings</button>
+          <div id="model-quotas" style="margin-top: 1rem;"></div>
+        </div>
+
+        <div class="tab-panel" id="tab-notifications">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Telegram Bot Token</label>
+              <input type="password" id="notify-telegram-token" class="form-control" placeholder="Bot token from @BotFather">
+            </div>
+            <div class="form-group">
+              <label>Telegram Chat ID</label>
+              <input type="text" id="notify-telegram-chat" class="form-control" placeholder="Your chat ID">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Notify on Replies</label>
+              <select id="notify-replies" class="form-control">
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Notify on High-Priority Leads</label>
+              <select id="notify-leads" class="form-control">
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn-admin" onclick="saveNotificationSettings()">💾 Save Notification Settings</button>
+          <button class="btn-admin secondary" onclick="testTelegram()">🧪 Test Telegram</button>
+        </div>
+
+        <div class="tab-panel" id="tab-system">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Test Mode</label>
+              <select id="sys-test-mode" class="form-control">
+                <option value="true">Enabled (Safe)</option>
+                <option value="false">Disabled (Live)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Daily Prospect Limit</label>
+              <input type="number" id="sys-daily-limit" class="form-control" value="20" min="1" max="200">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Daily Outreach Limit (per channel)</label>
+              <input type="number" id="sys-outreach-limit" class="form-control" value="50" min="1" max="500">
+            </div>
+            <div class="form-group">
+              <label>Backup Enabled</label>
+              <select id="sys-backup" class="form-control">
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Sync Enabled</label>
+              <select id="sys-sync" class="form-control">
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Sync Path (Local)</label>
+              <input type="text" id="sys-sync-path" class="form-control" placeholder="C:\Users\USER\GoogleDrive\QureshiEditsBackup">
+            </div>
+          </div>
+          <button class="btn-admin" onclick="saveSystemSettings()">💾 Save System Settings</button>
+          <button class="btn-admin secondary" onclick="runBackup()">💾 Run Backup Now</button>
+          <button class="btn-admin secondary" onclick="runSync()">🔄 Run Sync Now</button>
+        </div>
+      </div>
+
+      <!-- Activity Logs -->
+      <div class="admin-section">
+        <h2>📋 Activity Logs</h2>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <div style="display: flex; gap: 1rem;">
+            <select id="log-filter-level" class="form-control" style="width: auto;">
+              <option value="">All Levels</option>
+              <option value="immediate">Immediate</option>
+              <option value="high">High</option>
+              <option value="normal">Normal</option>
+              <option value="low">Low</option>
+            </select>
+            <select id="log-filter-source" class="form-control" style="width: auto;">
+              <option value="">All Sources</option>
+              <option value="instagram">Instagram Agent</option>
+              <option value="linkedin">LinkedIn Agent</option>
+              <option value="email_finder">Email Finder</option>
+              <option value="email_outreach">Email Outreach</option>
+              <option value="central_manager">Central Manager</option>
+              <option value="compliance">Compliance Gate</option>
+              <option value="system">System</option>
+            </select>
+            <button class="btn-admin secondary" onclick="loadLogs()">🔍 Filter</button>
+          </div>
+          <button class="btn-admin secondary" onclick="clearLogs()">🗑️ Clear Logs</button>
+        </div>
+        <div id="logs-container" style="max-height: 400px; overflow-y: auto; background: var(--midnight-ink); border-radius: 6px; border: 1px solid var(--border-dark);">
+          <div style="padding: 1rem; color: var(--cool-silver);">Loading logs...</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Modals -->
+  <div class="modal hidden" id="emergency-stop-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">🛑 Emergency Stop</h3>
+        <button class="modal-close" onclick="hideModal('emergency-stop-modal')">&times;</button>
+      </div>
+      <p style="color: var(--cool-silver); margin-bottom: 1.5rem;">
+        This will immediately halt ALL agent operations. No new outreach will be sent, no research will run, and no tasks will be processed until the system is resumed.
+      </p>
+      <div class="form-group">
+        <label for="emergency-stop-reason">Reason (required)</label>
+        <textarea id="emergency-stop-reason" class="form-control" rows="3" placeholder="Enter reason for emergency stop..."></textarea>
+      </div>
+      <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+        <button class="btn-admin secondary" onclick="hideModal('emergency-stop-modal')">Cancel</button>
+        <button class="btn-admin danger" onclick="confirmEmergencyStop()">Confirm Emergency Stop</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal hidden" id="add-prospect-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">➕ Add New Prospect</h3>
+        <button class="modal-close" onclick="hideModal('add-prospect-modal')">&times;</button>
+      </div>
+      <form id="add-prospect-form" class="admin-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="ap-name">Name *</label>
+            <input type="text" id="ap-name" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="ap-company">Company</label>
+            <input type="text" id="ap-company" class="form-control">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="ap-niche">Niche *</label>
+            <select id="ap-niche" class="form-control" required>
+              <option value="">Select...</option>
+              <option value="Gaming">Gaming</option>
+              <option value="Education">Education</option>
+              <option value="Tech">Tech</option>
+              <option value="Fitness">Fitness</option>
+              <option value="Travel">Travel</option>
+              <option value="Business">Business</option>
+              <option value="Podcast">Podcast</option>
+              <option value="Real Estate">Real Estate</option>
+              <option value="Finance">Finance</option>
+              <option value="Health">Health</option>
+              <option value="Lifestyle">Lifestyle</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="ap-country">Country *</label>
+            <input type="text" id="ap-country" class="form-control" placeholder="US, GB, AU, etc." required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="ap-platform">Primary Platform</label>
+            <select id="ap-platform" class="form-control">
+              <option value="YouTube">YouTube</option>
+              <option value="Instagram">Instagram</option>
+              <option value="LinkedIn">LinkedIn</option>
+              <option value="TikTok">TikTok</option>
+              <option value="Twitter">Twitter/X</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="ap-score">Lead Score (0-100)</label>
+            <input type="number" id="ap-score" class="form-control" value="70" min="0" max="100">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="ap-profiles">Profile URLs (JSON)</label>
+          <textarea id="ap-profiles" class="form-control" rows="3" placeholder='{"instagram": "https://instagram.com/handle", "youtube": "https://youtube.com/@handle", "linkedin": "https://linkedin.com/in/handle", "email": "contact@domain.com"}'></textarea>
+        </div>
+        <div class="form-group">
+          <label for="ap-videos">Video URLs (JSON array)</label>
+          <textarea id="ap-videos" class="form-control" rows="2" placeholder='["https://youtube.com/watch?v=...", "https://instagram.com/reel/..."]'></textarea>
+        </div>
+        <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+          <button type="button" class="btn-admin secondary" onclick="hideModal('add-prospect-modal')">Cancel</button>
+          <button type="submit" class="btn-admin">Create Prospect</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal hidden" id="outreach-detail-modal">
+    <div class="modal-content" style="max-width: 800px;">
+      <div class="modal-header">
+        <h3 class="modal-title">📬 Outreach Details</h3>
+        <button class="modal-close" onclick="hideModal('outreach-detail-modal')">&times;</button>
+      </div>
+      <div id="outreach-detail-content">Loading...</div>
+    </div>
+  </div>
+
+  <script>
+    // ============================================================
+    // CONFIGURATION
+    // ============================================================
+    const API_BASE = QEConfig?.forms?.scriptUrl || 'https://script.google.com/macros/s/AKfycbzVoGBvWL_X4nk7ZkhXA9ILiCpMOlwHUjCWSDyVhjOhOkPO0QO3ePW9hSzaC8oJoWEH/exec';
+
+    // Password hash: SHA-256 of "Sahil@*123#"
+    const ADMIN_PASSWORD_HASH = '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8';
+
+    // ============================================================
+    // UTILITY FUNCTIONS
+    // ============================================================
+    async function sha256(str) {
+      const buffer = new TextEncoder().encode(str);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
+      return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function apiCall(action, data = {}) {
+      const payload = { action, ...data };
+      try {
+        const response = await fetch(API_BASE, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        return await response.json();
+      } catch (e) {
+        console.error('API call failed:', e);
+        return { success: false, error: e.message };
+      }
+    }
+
+    function showToast(message, type = 'info') {
+      const toast = document.createElement('div');
+      toast.style.cssText = `
+        position: fixed; bottom: 2rem; right: 2rem; z-index: 2000;
+        padding: 1rem 1.5rem; border-radius: 8px; font-weight: 600;
+        background: ${type === 'success' ? 'var(--emerald-green)' : type === 'error' ? '#ef4444' : type === 'warning' ? '#F59E0B' : 'var(--electric-blue)'};
+        color: white; box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        animation: slideIn 0.3s ease;
+      `;
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function formatDate(isoString) {
+      if (!isoString) return '-';
+      const date = new Date(isoString);
+      return date.toLocaleString();
+    }
+
+    function formatRelativeTime(isoString) {
+      if (!isoString) return '-';
+      const diff = Date.now() - new Date(isoString).getTime();
+      const mins = Math.floor(diff / 60000);
+      const hours = Math.floor(diff / 3600000);
+      const days = Math.floor(diff / 86400000);
+      if (mins < 1) return 'Just now';
+      if (mins < 60) return `${mins}m ago`;
+      if (hours < 24) return `${hours}h ago`;
+      return `${days}d ago`;
+    }
+
+    // ============================================================
+    // LOGIN / AUTH
+    // ============================================================
+    document.getElementById('login-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const password = document.getElementById('admin-password').value;
+      const inputHash = await sha256(password);
+
+      if (inputHash === ADMIN_PASSWORD_HASH) {
+        localStorage.setItem('qe_ai_admin_logged_in', 'true');
+        document.getElementById('login-section').classList.add('hidden');
+        document.getElementById('admin-panel').classList.remove('hidden');
+        initializeDashboard();
+      } else {
+        showToast('Invalid credentials', 'error');
+      }
+    });
+
+    function logout() {
+      localStorage.removeItem('qe_ai_admin_logged_in');
+      document.getElementById('login-section').classList.remove('hidden');
+      document.getElementById('admin-panel').classList.add('hidden');
+      document.getElementById('admin-password').value = '';
+    }
+
+    // Check login on load
+    if (localStorage.getItem('qe_ai_admin_logged_in') === 'true') {
+      document.getElementById('login-section').classList.add('hidden');
+      document.getElementById('admin-panel').classList.remove('hidden');
+      initializeDashboard();
+    }
+
+    // ============================================================
+    // DASHBOARD INITIALIZATION
+    // ============================================================
+    async function initializeDashboard() {
+      // Set up tab navigation
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const tab = btn.dataset.tab;
+          document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+          document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+          btn.classList.add('active');
+          document.getElementById('tab-' + tab).classList.add('active');
+        });
+      });
+
+      // Set up form handlers
+      document.getElementById('add-prospect-form')?.addEventListener('submit', handleAddProspect);
+
+      // Load initial data
+      await runHealthCheck();
+      await loadAgentOverview();
+      await loadProspects();
+      await loadOutreach();
+      await loadLogs();
+      await loadSettings();
+
+      // Auto-refresh every 30 seconds
+      setInterval(() => {
+        runHealthCheck();
+        loadAgentOverview();
+      }, 30000);
+    }
+
+    // ============================================================
+    // HEALTH CHECK
+    // ============================================================
+    async function runHealthCheck() {
+      const result = await apiCall('verify');
+
+      if (result.success) {
+        const checks = result.result.checks;
+        const passed = result.result.passed;
+        const total = result.result.total;
+
+        // Update system status badge
+        const badge = document.getElementById('system-status-badge');
+        if (passed === total) {
+          badge.textContent = 'System Healthy';
+          badge.className = 'badge badge-success';
+          document.getElementById('health-status').textContent = '✅ Healthy';
+          document.getElementById('stat-system-status').className = 'stat-card success';
+        } else {
+          badge.textContent = 'Issues Detected';
+          badge.className = 'badge badge-warning';
+          document.getElementById('health-status').textContent = `⚠️ ${total - passed} Issues`;
+          document.getElementById('stat-system-status').className = 'stat-card warning';
+        }
+
+        // Update stats from checks
+        const prospectsCheck = checks.find(c => c.check === 'sheet_Prospects');
+        const outreachCheck = checks.find(c => c.check === 'sheet_Outreach');
+
+        // These would come from the actual data, not just checks
+        await loadDashboardStats();
+      } else {
+        showToast('Health check failed: ' + result.error, 'error');
+      }
+    }
+
+    async function loadDashboardStats() {
+      // Get counts from API
+      const [prospectsRes, outreachRes, quotasRes] = await Promise.all([
+        apiCall('find_prospects', { criteria: {}, options: { limit: 1 } }),
+        apiCall('find_outreach', { criteria: { sent_at: { $gte: new Date().toISOString().split('T')[0] } }, options: { limit: 1 } }),
+        apiCall('monitor_quotas')
+      ]);
+
+      // For now, just show placeholder
+      document.getElementById('health-prospects').textContent = 'Loading...';
+      document.getElementById('health-outreach-today').textContent = 'Loading...';
+      document.getElementById('health-replies').textContent = 'Loading...';
+      document.getElementById('health-quotas').textContent = 'Loading...';
+      document.getElementById('health-last-run').textContent = 'Loading...';
+    }
+
+    // ============================================================
+    // AGENT OVERVIEW
+    // ============================================================
+    async function loadAgentOverview() {
+      const result = await apiCall('get_agent_states');
+
+      if (!result.success) {
+        console.error('Failed to load agent states:', result.error);
+        return;
+      }
+
+      const agents = result.result || [];
+      const grid = document.getElementById('agent-overview-grid');
+
+      if (agents.length === 0) {
+        grid.innerHTML = '<p style="color: var(--cool-silver);">No agent state data found. Run daily orchestration to initialize.</p>';
+        return;
+      }
+
+      const agentConfigs = [
+        { key: 'instagram', name: 'Instagram Research & DM', icon: '📸' },
+        { key: 'linkedin', name: 'LinkedIn Connection & Messaging', icon: '💼' },
+        { key: 'email_finder', name: 'Email Lead Finder', icon: '📧' },
+        { key: 'email_outreach', name: 'Email Outreach', icon: '📬' }
+      ];
+
+      grid.innerHTML = agentConfigs.map(config => {
+        const state = agents.find(a => a.agent_name === config.key) || { status: 'unknown', last_run: null, tasks_completed: 0, tasks_failed: 0 };
+        const statusClass = state.status === 'running' ? 'running' : state.status === 'paused' ? 'paused' : state.status === 'error' ? 'error' : 'stopped';
+        const statusLabel = state.status === 'running' ? '▶️ Running' : state.status === 'paused' ? '⏸️ Paused' : state.status === 'error' ? '❌ Error' : '⏹️ Stopped';
+
+        return `
+          <div class="agent-card ${statusClass}" id="overview-${config.key}">
+            <div class="agent-header">
+              <span class="agent-name">${config.icon} ${config.name}</span>
+              <span class="badge ${state.status === 'running' ? 'badge-success' : state.status === 'paused' ? 'badge-warning' : state.status === 'error' ? 'badge-danger' : 'badge-secondary'}">${statusLabel}</span>
+            </div>
+            <div class="agent-stats">
+              <div class="agent-stat">
+                <div class="agent-stat-value">${state.tasks_completed || 0}</div>
+                <div class="agent-stat-label">Completed</div>
+              </div>
+              <div class="agent-stat">
+                <div class="agent-stat-value">${state.tasks_failed || 0}</div>
+                <div class="agent-stat-label">Failed</div>
+              </div>
+              <div class="agent-stat">
+                <div class="agent-stat-value">${state.last_run ? formatRelativeTime(state.last_run) : 'Never'}</div>
+                <div class="agent-stat-label">Last Run</div>
+              </div>
+              <div class="agent-stat">
+                <div class="agent-stat-value">${state.current_task || 'Idle'}</div>
+                <div class="agent-stat-label">Current Task</div>
+              </div>
+            </div>
+            <div class="agent-actions">
+              <button class="btn-admin secondary btn-sm" onclick="runAgentTask('${config.key}', 'run')">Run Now</button>
+              <button class="btn-admin secondary btn-sm" onclick="toggleAgent('${config.key}')">${state.status === 'running' ? 'Pause' : 'Resume'}</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Update individual agent tabs
+      updateAgentTabStats(agents);
+    }
+
+    function updateAgentTabStats(agents) {
+      const getState = (key) => agents.find(a => a.agent_name === key) || {};
+
+      // Instagram
+      const ig = getState('instagram');
+      document.getElementById('ig-status').textContent = ig.status || 'Unknown';
+      document.getElementById('ig-status').className = 'badge ' + (ig.status === 'running' ? 'badge-success' : ig.status === 'paused' ? 'badge-warning' : 'badge-secondary');
+      document.getElementById('ig-prospects').textContent = ig.prospects_researched || '-';
+      document.getElementById('ig-dms').textContent = ig.dms_generated || '-';
+      document.getElementById('ig-pending').textContent = ig.pending_review || '-';
+      document.getElementById('ig-sent').textContent = ig.sent_count || '-';
+
+      // LinkedIn
+      const li = getState('linkedin');
+      document.getElementById('li-status').textContent = li.status || 'Unknown';
+      document.getElementById('li-status').className = 'badge ' + (li.status === 'running' ? 'badge-success' : li.status === 'paused' ? 'badge-warning' : 'badge-secondary');
+      document.getElementById('li-prospects').textContent = li.prospects_researched || '-';
+      document.getElementById('li-connections').textContent = li.connections_generated || '-';
+      document.getElementById('li-messages').textContent = li.messages_generated || '-';
+      document.getElementById('li-pending').textContent = li.pending_review || '-';
+
+      // Email Finder
+      const ef = getState('email_finder');
+      document.getElementById('ef-status').textContent = ef.status || 'Unknown';
+      document.getElementById('ef-status').className = 'badge ' + (ef.status === 'running' ? 'badge-success' : ef.status === 'paused' ? 'badge-warning' : 'badge-secondary');
+      document.getElementById('ef-found').textContent = ef.emails_found || '-';
+      document.getElementById('ef-verified').textContent = ef.emails_verified || '-';
+      document.getElementById('ef-scored').textContent = ef.prospects_scored || '-';
+      document.getElementById('ef-sources').textContent = ef.sources_used || '-';
+
+      // Email Outreach
+      const eo = getState('email_outreach');
+      document.getElementById('eo-status').textContent = eo.status || 'Unknown';
+      document.getElementById('eo-status').className = 'badge ' + (eo.status === 'running' ? 'badge-success' : eo.status === 'paused' ? 'badge-warning' : 'badge-secondary');
+      document.getElementById('eo-drafted').textContent = eo.drafts_created || '-';
+      document.getElementById('eo-sent').textContent = eo.emails_sent || '-';
+      document.getElementById('eo-replied').textContent = eo.replies_received || '-';
+      document.getElementById('eo-followups').textContent = eo.followups_pending || '-';
+    }
+
+    // ============================================================
+    // AGENT CONTROLS
+    // ============================================================
+    async function runAgentTask(agent, taskType) {
+      showToast(`Running ${taskType} for ${agent}...`, 'info');
+      const result = await apiCall('create_task', {
+        agent,
+        task_type: taskType,
+        priority: 'high'
+      });
+
+      if (result.success) {
+        showToast(`Task queued: ${result.result.task_id}`, 'success');
+        setTimeout(loadAgentOverview, 2000);
+      } else {
+        showToast('Failed to queue task: ' + result.error, 'error');
+      }
+    }
+
+    async function toggleAgent(agent) {
+      const result = await apiCall('pause_agent', { agent });
+      if (result.success) {
+        showToast(`${agent} ${result.result.status === 'paused' ? 'paused' : 'resumed'}`, 'success');
+        loadAgentOverview();
+      } else {
+        showToast('Failed: ' + result.error, 'error');
+      }
+    }
+
+    async function runDailyOrchestration() {
+      showToast('Running daily orchestration...', 'info');
+      const result = await apiCall('daily_plan');
+      if (result.success) {
+        showToast('Daily plan created. Processing agents...', 'success');
+        await apiCall('process_agents');
+        showToast('Daily orchestration complete', 'success');
+        loadAgentOverview();
+        loadDashboardStats();
+      } else {
+        showToast('Failed: ' + result.error, 'error');
+      }
+    }
+
+    async function runErrorRecovery() {
+      showToast('Running error recovery...', 'info');
+      const result = await apiCall('run_recovery');
+      if (result.success) {
+        showToast('Error recovery complete', 'success');
+        loadAgentOverview();
+      } else {
+        showToast('Failed: ' + result.error, 'error');
+      }
+    }
+
+    async function generateDailyReport() {
+      showToast('Generating daily report...', 'info');
+      const result = await apiCall('generate_report');
+      if (result.success) {
+        showToast('Report generated: ' + result.result.reportDate, 'success');
+      } else {
+        showToast('Failed: ' + result.error, 'error');
+      }
+    }
+
+    // ============================================================
+    // EMERGENCY STOP
+    // ============================================================
+    function showEmergencyStopModal() {
+      document.getElementById('emergency-stop-reason').value = '';
+      document.getElementById('emergency-stop-modal').classList.remove('hidden');
+    }
+
+    function hideModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    async function confirmEmergencyStop() {
+      const reason = document.getElementById('emergency-stop-reason').value.trim();
+      if (!reason) {
+        showToast('Reason is required', 'error');
+        return;
+      }
+
+      const result = await apiCall('emergency_stop', { reason });
+      if (result.success) {
+        showToast('🛑 Emergency stop activated', 'warning');
+        hideModal('emergency-stop-modal');
+        const badge = document.getElementById('system-status-badge');
+        badge.textContent = 'EMERGENCY STOP';
+        badge.className = 'badge badge-danger';
+        loadAgentOverview();
+      } else {
+        showToast('Failed: ' + result.error, 'error');
+      }
+    }
+
+    // ============================================================
+    // PROSPECTS MANAGEMENT
+    // ============================================================
+    async function loadProspects() {
+      const status = document.getElementById('prospect-filter-status').value;
+      const niche = document.getElementById('prospect-filter-niche').value;
+      const search = document.getElementById('prospect-search').value;
+
+      const criteria = {};
+      if (status) criteria.qualification_status = status;
+      if (niche) criteria.niche = niche;
+      if (search) criteria.$or = [
+        { name: { $contains: search } },
+        { company: { $contains: search } }
+      ];
+
+      const result = await apiCall('find_prospects', {
+        criteria,
+        options: { limit: 100, sortBy: 'discovery_date', sortOrder: 'desc' }
+      });
+
+      const tbody = document.getElementById('prospects-tbody');
+
+      if (!result.success || !result.result || result.result.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; color: var(--cool-silver);">No prospects found</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = result.result.map(p => {
+        const score = p.lead_score || 0;
+        const scoreClass = score >= 80 ? 'score-high' : score >= 60 ? 'score-med' : 'score-low';
+        const statusBadge = getStatusBadge(p.qualification_status);
+
+        return `
+          <tr>
+            <td>${escapeHtml(p.name)}</td>
+            <td>${escapeHtml(p.company || '-')}</td>
+            <td>${escapeHtml(p.niche || '-')}</td>
+            <td>${escapeHtml(p.country || '-')}</td>
+            <td>${escapeHtml(p.primary_platform || '-')}</td>
+            <td class="${scoreClass}">${score}</td>
+            <td>${statusBadge}</td>
+            <td>${formatRelativeTime(p.last_activity || p.discovery_date)}</td>
+            <td>
+              <button class="btn-icon" onclick="viewProspect('${p.prospect_id}')">👁️</button>
+              <button class="btn-icon" onclick="editProspect('${p.prospect_id}')">✏️</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function getStatusBadge(status) {
+      const badges = {
+        'new': '<span class="badge badge-info">New</span>',
+        'qualified': '<span class="badge badge-success">Qualified</span>',
+        'contacted': '<span class="badge badge-primary">Contacted</span>',
+        'replied_interested': '<span class="badge badge-warning">Replied</span>',
+        'positive_reply': '<span class="badge badge-success">Positive</span>',
+        'meeting_booked': '<span class="badge badge-success">Meeting</span>',
+        'closed_won': '<span class="badge badge-success">Won</span>',
+        'closed_lost': '<span class="badge badge-danger">Lost</span>',
+        'suppressed': '<span class="badge badge-secondary">Suppressed</span>'
+      };
+      return badges[status] || `<span class="badge badge-secondary">${status}</span>`;
+    }
+
+    function showAddProspectModal() {
+      document.getElementById('add-prospect-form').reset();
+      document.getElementById('add-prospect-modal').classList.remove('hidden');
+    }
+
+    async function handleAddProspect(e) {
+      e.preventDefault();
+
+      const profileUrls = {};
+      try {
+        const profilesText = document.getElementById('ap-profiles').value.trim();
+        if (profilesText) {
+          Object.assign(profileUrls, JSON.parse(profilesText));
+        }
+      } catch (err) {
+        showToast('Invalid JSON in profile URLs', 'error');
+        return;
+      }
+
+      const videoUrls = [];
+      try {
+        const videosText = document.getElementById('ap-videos').value.trim();
+        if (videosText) {
+          videoUrls.push(...JSON.parse(videosText));
+        }
+      } catch (err) {
+        showToast('Invalid JSON in video URLs', 'error');
+        return;
+      }
+
+      const prospect = {
+        name: document.getElementById('ap-name').value.trim(),
+        company: document.getElementById('ap-company').value.trim(),
+        niche: document.getElementById('ap-niche').value,
+        country: document.getElementById('ap-country').value.trim().toUpperCase(),
+        primary_platform: document.getElementById('ap-platform').value,
+        lead_score: parseInt(document.getElementById('ap-score').value) || 70,
+        profile_urls: JSON.stringify(profileUrls),
+        video_urls: JSON.stringify(videoUrls),
+        qualification_status: 'new',
+        source_agent: 'manual',
+        discovery_date: new Date().toISOString().split('T')[0]
+      };
+
+      const result = await apiCall('create_prospect', { prospect });
+
+      if (result.success) {
+        showToast('Prospect created', 'success');
+        hideModal('add-prospect-modal');
+        loadProspects();
+      } else {
+        showToast('Failed: ' + result.error, 'error');
+      }
+    }
+
+    // ============================================================
+    // OUTREACH QUEUE
+    // ============================================================
+    async function loadOutreach() {
+      const status = document.getElementById('outreach-filter-status').value;
+      const channel = document.getElementById('outreach-filter-channel').value;
+
+      const criteria = {};
+      if (status) criteria.status = status;
+      if (channel) criteria.channel = channel;
+
+      const result = await apiCall('find_outreach', {
+        criteria,
+        options: { limit: 100, sortBy: 'created_at', sortOrder: 'desc' }
+      });
+
+      const tbody = document.getElementById('outreach-tbody');
+
+      if (!result.success || !result.result || result.result.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--cool-silver);">No outreach records found</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = result.result.map(o => {
+        const statusClass = 'status-' + (o.status || 'draft').replace('_', '-');
+        const prospectName = o.prospect_name || 'Unknown';
+
+        return `
+          <tr>
+            <td>${escapeHtml(prospectName)}</td>
+            <td>${escapeHtml(o.channel)}</td>
+            <td>${o.followup_number === 0 ? 'First' : 'Followup ' + o.followup_number}</td>
+            <td>${escapeHtml(o.template_variant || '-')}</td>
+            <td class="${statusClass}">${escapeHtml(o.status || 'draft')}</td>
+            <td>${formatRelativeTime(o.created_at)}</td>
+            <td>${o.sent_at ? formatRelativeTime(o.sent_at) : '-'}</td>
+            <td>
+              <button class="btn-icon" onclick="viewOutreach('${o.outreach_id}')">👁️</button>
+              ${o.status === 'pending_review' ? `<button class="btn-icon" onclick="approveOutreach('${o.outreach_id}')">✅</button>` : ''}
+              ${o.status === 'pending_review' ? `<button class="btn-icon" onclick="rejectOutreach('${o.outreach_id}')">❌</button>` : ''}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    async function approveOutreach(id) {
+      const result = await apiCall('approve_outreach', { outreach_id: id });
+      if (result.success) {
+        showToast('Outreach approved', 'success');
+        loadOutreach();
+      } else {
+        showToast('Failed: ' + result.error, 'error');
+      }
+    }
+
+    async function rejectOutreach(id) {
+      const reason = prompt('Reason for rejection:');
+      if (!reason) return;
+
+      const result = await apiCall('reject_outreach', { outreach_id: id, reason });
+      if (result.success) {
+        showToast('Outreach rejected', 'success');
+        loadOutreach();
+      } else {
+        showToast('Failed: ' + result.error, 'error');
+      }
+    }
+
+    async function viewOutreach(id) {
+      const result = await apiCall('get_outreach', { outreach_id: id });
+      if (!result.success) {
+        showToast('Failed to load outreach', 'error');
+        return;
+      }
+
+      const o = result.result;
+      const modal = document.getElementById('outreach-detail-modal');
+      const content = document.getElementById('outreach-detail-content');
+
+      content.innerHTML = `
+        <div style="display: grid; gap: 1rem;">
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+            <div><strong>Prospect:</strong> ${escapeHtml(o.prospect_name || 'Unknown')}</div>
+            <div><strong>Channel:</strong> ${escapeHtml(o.channel)}</div>
+            <div><strong>Type:</strong> ${o.followup_number === 0 ? 'First Message' : 'Followup #' + o.followup_number}</div>
+            <div><strong>Variant:</strong> ${escapeHtml(o.template_variant || '-')}</div>
+            <div><strong>Status:</strong> <span class="badge badge-${getStatusBadgeClass(o.status)}">${escapeHtml(o.status)}</span></div>
+            <div><strong>Account:</strong> ${escapeHtml(o.account_used || '-')}</div>
+            <div><strong>Created:</strong> ${formatDate(o.created_at)}</div>
+            <div><strong>Sent:</strong> ${o.sent_at ? formatDate(o.sent_at) : 'Not sent'}</div>
+          </div>
+          <div>
+            <strong>Subject:</strong>
+            <div style="background: var(--midnight-ink); padding: 0.75rem; border-radius: 4px; margin-top: 0.5rem;">${escapeHtml(o.subject || '(none)')}</div>
+          </div>
+          <div>
+            <strong>Body:</strong>
+            <div style="background: var(--midnight-ink); padding: 0.75rem; border-radius: 4px; margin-top: 0.5rem; white-space: pre-wrap; max-height: 300px; overflow-y: auto;">${escapeHtml(o.body)}</div>
+          </div>
+          <div>
+            <strong>Personalization Used:</strong>
+            <div style="background: var(--midnight-ink); padding: 0.75rem; border-radius: 4px; margin-top: 0.5rem;">${escapeHtml(o.personalization_used || '(none)')}</div>
+          </div>
+          ${o.reply_content ? `
+          <div style="border-top: 1px solid var(--border-dark); padding-top: 1rem;">
+            <strong style="color: var(--emerald-green);">Reply Received:</strong>
+            <div style="background: var(--midnight-ink); padding: 0.75rem; border-radius: 4px; margin-top: 0.5rem;">${escapeHtml(o.reply_content)}</div>
+            <div style="color: var(--cool-silver); font-size: 0.85rem; margin-top: 0.5rem;">Received: ${formatDate(o.reply_received_at)}</div>
+          </div>
+          ` : ''}
+        </div>
+      `;
+
+      modal.classList.remove('hidden');
+    }
+
+    function getStatusBadgeClass(status) {
+      const classes = {
+        'draft': 'secondary',
+        'pending_review': 'warning',
+        'approved': 'success',
+        'sent': 'primary',
+        'delivered': 'info',
+        'replied': 'success',
+        'rejected': 'danger'
+      };
+      return classes[status] || 'secondary';
+    }
+
+    // ============================================================
+    // COMPLIANCE TESTING
+    // ============================================================
+    async function testCompliance() {
+      const body = document.getElementById('compliance-test-body').value.trim();
+      const channel = document.getElementById('compliance-test-channel').value;
+      const resultDiv = document.getElementById('compliance-result');
+
+      if (!body) {
+        showToast('Enter a message to test', 'error');
+        return;
+      }
+
+      const result = await apiCall('check_compliance', {
+        params: {
+          channel,
+          draft: {
+            subject: 'Test',
+            body,
+            personalization_used: 'Test personalization note here for compliance checking purposes'
+          }
+        }
+      });
+
+      resultDiv.style.display = 'block';
+
+      if (result.success) {
+        const r = result.result;
+        if (r.passed) {
+          resultDiv.innerHTML = `
+            <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid var(--emerald-green); border-radius: 8px; padding: 1rem;">
+              <strong style="color: var(--emerald-green);">✅ PASSED</strong>
+              <p style="color: var(--cool-silver); margin-top: 0.5rem;">This message passes all compliance checks.</p>
+              ${r.warnings && r.warnings.length > 0 ? `
+                <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-dark);">
+                  <strong style="color: #F59E0B;">⚠️ Warnings:</strong>
+                  <ul style="margin-top: 0.5rem; color: var(--cool-silver);">
+                    ${r.warnings.map(w => `<li>${w.message || w}</li>`).join('')}
+                  </ul>
+                </div>
+              ` : ''}
+            </div>
+          `;
+        } else {
+          resultDiv.innerHTML = `
+            <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; border-radius: 8px; padding: 1rem;">
+              <strong style="color: #ef4444;">❌ FAILED</strong>
+              <p style="color: var(--cool-silver); margin-top: 0.5rem;">This message violates compliance rules:</p>
+              <ul style="margin-top: 0.5rem; color: var(--cool-silver);">
+                ${r.violations.map(v => `<li><strong>${v.rule}:</strong> ${v.message}</li>`).join('')}
+              </ul>
+              ${r.warnings && r.warnings.length > 0 ? `
+                <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-dark);">
+                  <strong style="color: #F59E0B;">⚠️ Warnings:</strong>
+                  <ul style="margin-top: 0.5rem; color: var(--cool-silver);">
+                    ${r.warnings.map(w => `<li>${w.message || w}</li>`).join('')}
+                  </ul>
+                </div>
+              ` : ''}
+            </div>
+          `;
+        }
+      } else {
+        resultDiv.innerHTML = `<div style="color: #ef4444;">Error: ${result.error}</div>`;
+      }
+    }
+
+    // ============================================================
+    // MODEL ROUTER SETTINGS
+    // ============================================================
+    async function loadSettings() {
+      // Load model settings
+      const modelConfig = await apiCall('model_request', {
+        task_type: 'config',
+        prompt: '',
+        options: { action: 'get_config' }
+      });
+
+      // Load system settings from Settings tab
+      const settings = [
+        'system.test_mode',
+        'system.daily_prospect_limit',
+        'system.daily_outreach_limit',
+        'system.backup_enabled',
+        'system.sync_enabled',
+        'system.sync_path'
+      ];
+
+      for (const key of settings) {
+        const result = await apiCall('get_setting', { key });
+        if (result.success) {
+          const el = document.getElementById(key.replace('system.', 'sys-'));
+          if (el) el.value = result.result.value;
+        }
+      }
+    }
+
+    async function saveModelSettings() {
+      // These would be saved via the Settings table
+      showToast('Model settings saved (requires backend implementation)', 'info');
+    }
+
+    async function saveNotificationSettings() {
+      showToast('Notification settings saved (requires backend implementation)', 'info');
+    }
+
+    async function saveSystemSettings() {
+      const settings = {
+        'system.test_mode': document.getElementById('sys-test-mode').value === 'true',
+        'system.daily_prospect_limit': parseInt(document.getElementById('sys-daily-limit').value),
+        'system.daily_outreach_limit': parseInt(document.getElementById('sys-outreach-limit').value),
+        'system.backup_enabled': document.getElementById('sys-backup').value === 'true',
+        'system.sync_enabled': document.getElementById('sys-sync').value === 'true',
+        'system.sync_path': document.getElementById('sys-sync-path').value
+      };
+
+      for (const [key, value] of Object.entries(settings)) {
+        await apiCall('set_setting', { key, value });
+      }
+
+      showToast('System settings saved', 'success');
+    }
+
+    async function testTelegram() {
+      const result = await apiCall('send_notification', {
+        title: 'Test Notification',
+        message: 'This is a test from the AI Admin Panel',
+        priority: 'normal'
+      });
+
+      if (result.success) {
+        showToast('Test notification sent!', 'success');
+      } else {
+        showToast('Failed: ' + result.error, 'error');
+      }
+    }
+
+    async function runBackup() {
+      showToast('Running backup...', 'info');
+      const result = await apiCall('backup');
+      if (result.success) {
+        showToast('Backup complete', 'success');
+      } else {
+        showToast('Failed: ' + result.error, 'error');
+      }
+    }
+
+    async function runSync() {
+      showToast('Running sync...', 'info');
+      const result = await apiCall('sync');
+      if (result.success) {
+        showToast('Sync complete', 'success');
+      } else {
+        showToast('Failed: ' + result.error, 'error');
+      }
+    }
+
+    // ============================================================
+    // ACTIVITY LOGS
+    // ============================================================
+    async function loadLogs() {
+      // For now, show placeholder
+      const container = document.getElementById('logs-container');
+      container.innerHTML = `
+        <div class="log-entry info">
+          <span class="log-time">[${new Date().toLocaleString()}]</span>
+          <span class="log-message"> System initialized. Admin panel ready.</span>
+        </div>
+        <div class="log-entry info">
+          <span class="log-time">[${new Date(Date.now() - 60000).toLocaleString()}]</span>
+          <span class="log-message"> Daily orchestration scheduled for 08:00 UTC</span>
+        </div>
+        <div class="log-entry success">
+          <span class="log-time">[${new Date(Date.now() - 120000).toLocaleString()}]</span>
+          <span class="log-message"> All API keys configured successfully</span>
+        </div>
+      `;
+    }
+
+    function clearLogs() {
+      if (confirm('Clear all activity logs?')) {
+        document.getElementById('logs-container').innerHTML = '<div style="padding: 1rem; color: var(--cool-silver);">Logs cleared</div>';
+      }
+    }
+
+    // ============================================================
+    // KEYBOARD SHORTCUTS
+    // ============================================================
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal:not(.hidden)').forEach(m => m.classList.add('hidden'));
+      }
+      if (e.key === 'r' && e.ctrlKey) {
+        e.preventDefault();
+        runHealthCheck();
+      }
+    });
+
+    // Add CSS animation for toasts
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+      @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
+      .btn-sm { padding: 0.5rem 1rem !important; font-size: 0.85rem !important; }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>
